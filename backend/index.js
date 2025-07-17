@@ -3,6 +3,7 @@ import "dotenv/config"
 import cookieParser from "cookie-parser"
 import cors from "cors"
 import connectDB from "./config/db.js"
+import authRoutes from "./routes/auth.route.js"
 const PORT = process.env.PORT || 4000
 
 const app = express()
@@ -15,6 +16,8 @@ app.use(cookieParser())
 app.get("/",(req,res) => {
     res.send("Servidor ok")
 })
+
+app.use("/api/auth",authRoutes)
 
 
 connectDB().then(() => {
