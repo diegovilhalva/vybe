@@ -2,6 +2,7 @@ import express from "express"
 import "dotenv/config"
 import cookieParser from "cookie-parser"
 import cors from "cors"
+import connectDB from "./config/db.js"
 const PORT = process.env.PORT || 4000
 
 const app = express()
@@ -16,8 +17,11 @@ app.get("/",(req,res) => {
 })
 
 
-app.listen(PORT,() => {
-    console.log(`Servidor rodando na porta ${PORT}`)
-})
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+  });
+});
+
 
 
