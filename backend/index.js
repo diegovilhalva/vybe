@@ -9,17 +9,17 @@ const PORT = process.env.PORT || 4000
 
 const app = express()
 
-app.use(cors())
+app.use(cors({ origin: "http://localhost:5173", credentials: true }))
 app.use(express.json())
 app.use(cookieParser())
 
 
-app.get("/",(req,res) => {
-    res.send("Servidor ok")
+app.get("/", (req, res) => {
+  res.send("Servidor ok")
 })
 
-app.use("/api/auth",authRoutes)
-app.use("/api/user",userRoutes)
+app.use("/api/auth", authRoutes)
+app.use("/api/user", userRoutes)
 
 
 connectDB().then(() => {

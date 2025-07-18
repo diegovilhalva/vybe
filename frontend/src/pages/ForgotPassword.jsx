@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { ClipLoader } from 'react-spinners';
 import { urlEndpoint } from '../constants/apiUrl';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router';
 
 const ForgotPassword = () => {
     const [step, setStep] = useState(1)
@@ -17,10 +18,12 @@ const ForgotPassword = () => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmNewPassword, setConfirmNewPassword] = useState("");
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
     const handleStep1 = async () => {
         setLoading(true)
         try {
             const res = await axios.post(`${urlEndpoint}/auth/send-otp`, { email }, { withCredentials: true })
+            console.log(res)
             setStep(2)
         } catch (error) {
             const msg = error.response?.data?.message || "Erro ao tentar enviar o email"
@@ -48,15 +51,20 @@ const ForgotPassword = () => {
         try {
             if (newPassword !== confirmNewPassword) {
                 setLoading(false);
-                toast.error("As enha não são iguais")
+                toast.error("As senhas não são iguais")
             }
             const res = await axios.post(`${urlEndpoint}/auth/reset-password`, { email, password: newPassword }, { withCredentials: true })
+            if (res.status === 200) {
+                navigate("/signin")
+            }
+
             
         } catch (error) {
             const msg = error.response?.data?.message || "Erro ao tentar redefinir a senha"
             toast.error(msg)
         } finally {
             setLoading(false)
+            
         }
     }
 

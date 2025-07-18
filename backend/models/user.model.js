@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
     saved: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     loops: [{ type: mongoose.Schema.Types.ObjectId, ref: "Loop" }],
     story: { type: mongoose.Schema.Types.ObjectId, ref: "Story" },
+    resetOtp: { type: String },
+    otpExpires: { type: Date },
+    isOtpVerified: { type: Boolean, default: false },
 }, { timestamps: true })
 
 const User = mongoose.model("User", userSchema);

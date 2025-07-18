@@ -2,6 +2,7 @@ import genToken from "../config/token.js"
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
 import { signInSchema, signUpSchema } from "../validations/auth.validation.js";
+import sendMail from "../config/email.js";
 
 export const signUp = async (req, res) => {
     try {
@@ -99,6 +100,93 @@ export const signOut = async (req, res) => {
     }
     catch (error) {
         return res.status(500).json({ message: `erro no logout ${error}` });
+    }
+
+}
+
+
+
+export const sendOtp = async (req, res) => {
+    try {
+        const { email } = req.body
+
+        const user = await User.findOne({ email })
+
+        if (!user) {
+            return res.status(400).json({ message: "Usuário não encontrado" });
+        }
+
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+        user.resetOtp = otp;
+        user.otpExpires = Date.now() + 10 * 60 * 1000;
+        user.isOtpVerified = false;
+
+
+        await user.save();
+        await sendMail(email, otp)
+
+        return res.status(200).json({ message: "código OTP enviado para o seu email" })
+
+    } catch (error) {
+         console.error('Erro ao enviar OTP:', error)
+        return res.status(500).json({ message: `erro ao tentar enviar o código OTP` })
+    }
+}
+
+
+export const verifyOtp = async (req, res) => {
+       try{
+
+        const { email, otp } = req.body;
+        const user = await User.findOne({ email });
+        if(!user || user.resetOtp !== otp || user.otpExpires < Date.now()){
+            return res.status(400).json({ message: "Código inválido ou expirado" });
+        }
+
+        user.isOtpVerified = true;
+        user.resetOtp = undefined;
+        user.otpExpires = undefined;
+
+        await user.save();
+
+        return res.status(200).json({ message: "Otp verificado com sucesso" });
+
+    }
+    catch(error){
+        console.log(`erro na viricação do otp ${error}`)
+        return res.status(500).json({ message: ` Erro ao verificar código OTP` });
+    }
+
+}
+
+
+
+
+
+export const resetPassword = async (req, res) => {
+
+    try{
+
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+        if(!user || !user.isOtpVerified){
+            return res.status(400).json({ message: "Usuário não encontrado ou Código OTP não verificado" });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        user.password = hashedPassword;
+        
+        await user.save();
+
+        return res.status(200).json({ message: "Senha alterada com sucesso" })
+
+        
+
+    }
+    catch(error){
+        return res.status(500).json({ message: "Erro ao tentar alterar a senha" });
     }
 
 }
