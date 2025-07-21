@@ -8,6 +8,8 @@ import { toast } from 'sonner'
 import axios from "axios"
 import { urlEndpoint } from '../constants/apiUrl'
 import { ClipLoader } from "react-spinners"
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../redux/userSlice';
 
 const SignUp = () => {
     const [inputClicked, setInputClicked] = useState({
@@ -23,6 +25,7 @@ const SignUp = () => {
     const [userName, setUserName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const dispatch = useDispatch()
 
     const handleSignup = async () => {
         setLoading(true)
@@ -33,7 +36,8 @@ const SignUp = () => {
         }
 
         try {
-            const res = await axios.post(`${urlEndpoint}/auth/signup`, { name, userName, email, password })
+            const res = await axios.post(`${urlEndpoint}/auth/signup`, { name, userName, email, password },{withCredentials:true})
+            dispatch(setUserData(res.data))
         } catch (error) {
             const msg = error.response?.data?.message || "Erro ao criar conta"
             toast.error(msg)

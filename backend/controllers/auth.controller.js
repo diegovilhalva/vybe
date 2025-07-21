@@ -33,9 +33,10 @@ export const signUp = async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             maxAge: 10 * 365 * 24 * 60 * 60 * 1000,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Strict'
+            secure: process.env.NODE_ENV === 'production', // false local
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
         });
+
 
         const userResponse = user.toObject();
         delete userResponse.password;
@@ -74,13 +75,15 @@ export const signIn = async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             maxAge: 10 * 365 * 24 * 60 * 60 * 1000,
-            secure: false,
-            sameSite: 'Strict'
+            secure: process.env.NODE_ENV === 'production', 
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
         });
+
+
 
         const userResponse = user.toObject();
         delete userResponse.password;
-
+        
         return res.status(200).json(userResponse);
 
     }
@@ -128,18 +131,18 @@ export const sendOtp = async (req, res) => {
         return res.status(200).json({ message: "código OTP enviado para o seu email" })
 
     } catch (error) {
-         console.error('Erro ao enviar OTP:', error)
+        console.error('Erro ao enviar OTP:', error)
         return res.status(500).json({ message: `erro ao tentar enviar o código OTP` })
     }
 }
 
 
 export const verifyOtp = async (req, res) => {
-       try{
+    try {
 
         const { email, otp } = req.body;
         const user = await User.findOne({ email });
-        if(!user || user.resetOtp !== otp || user.otpExpires < Date.now()){
+        if (!user || user.resetOtp !== otp || user.otpExpires < Date.now()) {
             return res.status(400).json({ message: "Código inválido ou expirado" });
         }
 
@@ -152,7 +155,7 @@ export const verifyOtp = async (req, res) => {
         return res.status(200).json({ message: "Otp verificado com sucesso" });
 
     }
-    catch(error){
+    catch (error) {
         console.log(`erro na viricação do otp ${error}`)
         return res.status(500).json({ message: ` Erro ao verificar código OTP` });
     }
@@ -165,11 +168,11 @@ export const verifyOtp = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
 
-    try{
+    try {
 
         const { email, password } = req.body;
         const user = await User.findOne({ email });
-        if(!user || !user.isOtpVerified){
+        if (!user || !user.isOtpVerified) {
             return res.status(400).json({ message: "Usuário não encontrado ou Código OTP não verificado" });
         }
 
@@ -177,15 +180,15 @@ export const resetPassword = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         user.password = hashedPassword;
-        
+
         await user.save();
 
         return res.status(200).json({ message: "Senha alterada com sucesso" })
 
-        
+
 
     }
-    catch(error){
+    catch (error) {
         return res.status(500).json({ message: "Erro ao tentar alterar a senha" });
     }
 

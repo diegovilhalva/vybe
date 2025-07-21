@@ -8,6 +8,8 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import { urlEndpoint } from '../constants/apiUrl';
 import { ClipLoader } from 'react-spinners';
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../redux/userSlice';
 
 const SignIn = () => {
     const [inputClicked, setInputClicked] = useState({
@@ -19,6 +21,8 @@ const SignIn = () => {
     const navigate = useNavigate()
     const [userName, setUserName] = useState("")
     const [password, setPassword] = useState("")
+    const dispatch = useDispatch()
+
     const handleSignin = async () => {
         setLoading(true)
         if (!userName || !password) {
@@ -28,13 +32,14 @@ const SignIn = () => {
         }
 
         try {
-            const res = await axios.post(`${urlEndpoint}/auth/signin`, { userName, password })
-            
+            const res = await axios.post(`${urlEndpoint}/auth/signin`, { userName, password },{withCredentials:true})
+            dispatch(setUserData(res.data))        
         } catch (error) {
             const msg = error.response?.data?.message || "Erro ao entrar na sua conta"
             toast.error(msg)
         } finally {
             setLoading(false)
+            navigate("/")
         }
     }
     return (
