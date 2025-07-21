@@ -47,7 +47,7 @@ const SignUp = () => {
             <div className='w-[90%] lg:max-w-[60%] h-[600px] bg-white rounded-2xl flex justify-center items-center overflow-hidden border-2 border-[#1a1f23]'>
                 <div className='w-full lg:w-[50%] h-full bg-white flex flex-col items-center p-[10px] gap-[20px]'>
                     <div className='flex gap-[10px] items-center text-[20px] font-semibold mt-[40px]'>
-                        <span>Crie sua conta na</span>
+                        <span>Crie sua conta no</span>
                         <img src={logo} alt='vyber logo' className='w-[70px]' />
                     </div>
                     <div className='relative flex items-center justify-start w-[90%] h-[50px] rounded-2xl border-2 border-black' onClick={() => setInputClicked({ ...inputClicked, name: true })} >
