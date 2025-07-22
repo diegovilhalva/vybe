@@ -6,11 +6,12 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import { useSelector } from "react-redux";
 import useGetCurrentUser from "./hooks/useGetCurrentUser";
+import useGetSuggestedUsers from "./hooks/useGetSuggestedUsers";
 
 const App = () => {
   const { loading } = useGetCurrentUser();
   const { userData } = useSelector((state) => state.user)
-
+  useGetSuggestedUsers()
   if (loading) return null; // ou um loader
 
   
