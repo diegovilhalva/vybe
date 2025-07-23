@@ -7,6 +7,9 @@ import Home from "./pages/Home";
 import { useSelector } from "react-redux";
 import useGetCurrentUser from "./hooks/useGetCurrentUser";
 import useGetSuggestedUsers from "./hooks/useGetSuggestedUsers";
+import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
+
 
 const App = () => {
   const { loading } = useGetCurrentUser();
@@ -14,7 +17,7 @@ const App = () => {
   useGetSuggestedUsers()
   if (loading) return null; // ou um loader
 
-  
+
   return (
     <>
       <Toaster richColors position="top-center" />
@@ -23,6 +26,8 @@ const App = () => {
         <Route path="/signin" element={!userData ? <SignIn /> : <Navigate to={"/"} />} />
         <Route path="/" element={userData ? <Home /> : <SignIn />} />
         <Route path="/forgot-password" element={!userData ? <ForgotPassword /> : <Navigate to={"/"} />} />
+        <Route path="/profile/:userName" element={userData ? <Profile /> : <Navigate to={"/signin"} />} />
+           <Route path="/editprofile" element={ userData ? <EditProfile /> : <Navigate to={"/signin"} />} /> 
       </Routes>
     </>
   );

@@ -1,4 +1,4 @@
-import cloudinary from './cloudinary';
+import cloudinary from './cloudinary.js';
 import fs from 'fs';
 
 const uploadOnCloudinary = async (filePath) => {

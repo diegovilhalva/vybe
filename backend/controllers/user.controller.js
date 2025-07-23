@@ -85,8 +85,26 @@ export const editProfile = async (req, res) => {
             message: "Perfil atualizado com sucesso",
             user: userResponse,
         })
-        
+
     } catch (error) {
         return res.status(500).json({ message: `Erro ao editar perfil  ${error}` });
     }
 };
+
+
+export const getProfile = async (req, res) => {
+  try {
+    const userName = req.params.userName;
+    const user = await User.findOne({ userName })
+      .select("-password")
+      .populate("posts loops followers following");
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: `Erro ao buscar perfil` });
+  }
+}
