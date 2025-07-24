@@ -31,7 +31,7 @@ const LeftBar = () => {
 
             <div className="flex  items-center gap-[10px]">
                 <div className="w-[70px] h-[70px] border-2 border-black rounded-full cursor-pointer overflow-hidden">
-                    <img src={userData.profileImage || dp} alt={userData.name} className="w-full object-cover" />
+                    <img src={userData.profileImage || dp} alt={userData.name} className="w-full h-full object-cover" />
                 </div>
                 <div>
                     <div className="text-[18px] text-white font-semibold ">
