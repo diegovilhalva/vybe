@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.route.js"
 import userRoutes from "./routes/user.route.js"
 import postRoutes from "./routes/post.route.js"
 import loopRoutes from "./routes/loop.route.js"
+import storyRoutes from "./routes/story.route.js"
 
 const PORT = process.env.PORT || 4000
 
@@ -25,6 +26,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/user", userRoutes)
 app.use("/api/post", postRoutes)
 app.use("/api/loop", loopRoutes)
+app.use("/api/story",storyRoutes)
 
 connectDB().then(() => {
   app.listen(PORT, () => {
