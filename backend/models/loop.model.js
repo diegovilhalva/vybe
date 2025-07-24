@@ -12,7 +12,6 @@ const loopSchema = new mongoose.Schema({
             ref: 'User'
         },
         message: { type: String },
-        createdAt: { type: Date, default: Date.now }
     }],
 
 }, { timestamps: true });

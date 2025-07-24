@@ -9,13 +9,14 @@ import useGetCurrentUser from "./hooks/useGetCurrentUser";
 import useGetSuggestedUsers from "./hooks/useGetSuggestedUsers";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
+import Upload from "./pages/Upload";
 
 
 const App = () => {
   const { loading } = useGetCurrentUser();
   const { userData } = useSelector((state) => state.user)
   useGetSuggestedUsers()
-  if (loading) return null; // ou um loader
+  if (loading) return null;
 
 
   return (
@@ -27,7 +28,8 @@ const App = () => {
         <Route path="/" element={userData ? <Home /> : <SignIn />} />
         <Route path="/forgot-password" element={!userData ? <ForgotPassword /> : <Navigate to={"/"} />} />
         <Route path="/profile/:userName" element={userData ? <Profile /> : <Navigate to={"/signin"} />} />
-           <Route path="/editprofile" element={ userData ? <EditProfile /> : <Navigate to={"/signin"} />} /> 
+        <Route path="/editprofile" element={userData ? <EditProfile /> : <Navigate to={"/signin"} />} />
+        <Route path="/upload" element={userData ? <Upload /> : <Navigate to={"/signin"} />} />
       </Routes>
     </>
   );
