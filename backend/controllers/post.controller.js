@@ -174,6 +174,7 @@ export const saved = async (req, res) => {
         const postId = req.params.postId;
         const user = await User.findById(req.userId);
 
+        
         const alreadySaved = user.saved.some(id => id.toString() == postId.toString());
         if (alreadySaved) {
             user.saved = user.saved.filter(id => id.toString() != postId.toString());
@@ -183,7 +184,7 @@ export const saved = async (req, res) => {
         }
 
         await user.save();
-        await user.populate("saved");
+        user.populate("saved");
 
         return res.status(200).json(user);
 

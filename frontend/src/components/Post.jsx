@@ -72,9 +72,10 @@ const Post = ({ post }) => {
     const handleSaved = async () => {
 
         try {
-
+            
             const result = await axios.get(`${urlEndpoint}/post/saved/${post._id}`, { withCredentials: true });
             dispatch(setUserData(result.data));
+            
 
         }
         catch (error) {
