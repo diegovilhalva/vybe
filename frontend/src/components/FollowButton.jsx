@@ -11,6 +11,7 @@ const FollowButton = ({targetUserId, tailwind, onFollowChange}) => {
     const dispatch = useDispatch();
 
     const following = useSelector((state) => state.user.following);
+
     const isFollowing = following.includes(targetUserId);
 
     const handleFollow = async () => {
@@ -22,6 +23,7 @@ const FollowButton = ({targetUserId, tailwind, onFollowChange}) => {
             if(onFollowChange) {
                 onFollowChange();
             }
+            toast.success(result.data.message)
         }
         catch (error) {
            toast.error(error.response.data.message)

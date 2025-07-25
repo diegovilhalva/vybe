@@ -96,7 +96,7 @@ const Profile = () => {
                                     <img
                                         src={user.profileImage || dp}
                                         alt=""
-                                        className="w-full object-cover"
+                                        className="w-full h-full object-cover"
                                     />
                                 </div>
                             ))}

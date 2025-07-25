@@ -115,7 +115,7 @@ export const follow = async (req, res) => {
     try {
         const currentUserId = req.userId;
         const targetUserId = req.params.targetUserId;
-        console.log(currentUserId, targetUserId);
+        
 
         if (!targetUserId) {
             return res.status(400).json({ message: "Usuário não encontrado" });

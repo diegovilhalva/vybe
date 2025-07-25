@@ -16,18 +16,18 @@ const userSlice = createSlice({
             state.suggestedUsers = action.payload;
         },
         setProfileData: (state, action) => {
-            state.profileData = action.payload;
+            state.profileData = action.payload
         },
         setFollowing: (state, action) => {
-            state.following = action.payload;
+            state.following = action.payload
         },
         toggleFollow: (state, action) => {
             const targetUserId = action.payload;
             if (state.following.includes(targetUserId)) {
-                state.following = state.following.filter(id => id !== targetUserId);
+                state.following = state.following.filter(id => id !== targetUserId)
             }
             else {
-                state.following.push(targetUserId);
+                state.following.push(targetUserId)
             }
         },
     }

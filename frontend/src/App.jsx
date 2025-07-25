@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import Upload from "./pages/Upload";
 import useGetAllPosts from "./hooks/useGetAllPosts";
+import useGetFollowingList from "./hooks/useGetFollowingList";
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
   const { userData } = useSelector((state) => state.user)
   useGetSuggestedUsers()
   useGetAllPosts()
+  useGetFollowingList()
   if (loading) return null;
 
 
