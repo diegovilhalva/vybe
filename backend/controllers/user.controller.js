@@ -93,18 +93,105 @@ export const editProfile = async (req, res) => {
 
 
 export const getProfile = async (req, res) => {
-  try {
-    const userName = req.params.userName;
-    const user = await User.findOne({ userName })
-      .select("-password")
-      .populate("posts loops followers following");
-    if (!user) {
-      return res.status(404).json({ message: "Usuário não encontrado" });
-    }
+    try {
+        const userName = req.params.userName;
+        const user = await User.findOne({ userName })
+            .select("-password")
+            .populate("posts loops followers following");
+        if (!user) {
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        }
 
-    return res.status(200).json(user);
-  } catch (error) {
-    console.log(error)
-    return res.status(500).json({ message: `Erro ao buscar perfil` });
-  }
+        return res.status(200).json(user);
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: `Erro ao buscar perfil` });
+    }
 }
+
+
+
+export const follow = async (req, res) => {
+    try {
+        const currentUserId = req.userId;
+        const targetUserId = req.params.targetUserId;
+        console.log(currentUserId, targetUserId);
+
+        if (!targetUserId) {
+            return res.status(400).json({ message: "Usuário não encontrado" });
+        }
+
+        if (currentUserId == targetUserId) {
+            return res.status(400).json({ message: "Você não pode seguir a si mesmo" });
+        }
+
+        const currentUser = await User.findById(currentUserId);
+        const targetUser = await User.findById(targetUserId);
+
+        const isFollowing = currentUser.following.includes(targetUserId);
+        if (isFollowing) {
+            currentUser.following = currentUser.following.filter(
+                (id) => id.toString() != targetUserId.toString()
+            );
+            targetUser.followers = targetUser.followers.filter(
+                (id) => id.toString() != currentUserId.toString()
+            );
+
+            await currentUser.save();
+            await targetUser.save();
+
+            return res.status(200).json({
+                message: "Voce deixou de seguir este usuário",
+                following: false,
+            });
+        } else {
+            currentUser.following.push(targetUserId);
+            targetUser.followers.push(currentUserId);
+            /*
+          if (currentUser._id != targetUser._id) {
+            const notification = await Notification.create({
+              sender: req.userId,
+              receiver: targetUserId,
+              type: "follow",
+              // post: loop._id,
+              message: `started following you`,
+            });
+            const populatedNotification = await Notification.findById(
+              notification._id
+            ).populate("sender receiver");
+    
+            const receiverSocketId = getSocketId(targetUserId);
+            if (receiverSocketId) {
+              io.to(receiverSocketId).emit(
+                "newNotification",
+                populatedNotification
+              );
+            }
+          } */
+
+            await currentUser.save();
+            await targetUser.save();
+
+            return res.status(200).json({
+                message: "Agora você está seguindo este usuário",
+                following: true,
+            });
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: `Erro no servidor` });
+    }
+};
+
+
+export const followingList = async (req, res) => {
+    try {
+        const result = await User.findById(req.userId);
+        return res.status(200).json(result?.following);
+    } catch (error) {
+        console.log(error)
+        return res
+            .status(500)
+            .json({ message: `Erro ao carregar seguidores` });
+    }
+};

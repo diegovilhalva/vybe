@@ -28,11 +28,11 @@ const Feed = () => {
         <img src={logo} alt="" className="w-[80px]" />
         <div className="flex items-center gap-[10px]">
           <div className="relative z-[100]">
-            <FaRegHeart className="text-[white] w-[25px] h-[25px]" />
+            <FaRegHeart className="text-[white] w-[25px] h-[25px] cursor-pointer" />
             <div className="w-[10px] h-[10px] bg-blue-600 rounded-full absolute top-0 right-[-5px]"></div>
-            <BiMessageAltDetail
-              className="text-white w-[25px] h-[25px]" />
           </div>
+            <BiMessageAltDetail
+              className="text-white w-[25px] h-[25px] cursor-pointer" />
         </div>
       </div>
 
