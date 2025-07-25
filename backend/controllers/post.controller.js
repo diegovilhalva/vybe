@@ -5,7 +5,7 @@ import uploadOnCloudinary from "../config/upload.js"
 export const uploadPost = async (req, res) => {
     try {
         const { caption, mediaType } = req.body
-        console.log(req.file)
+       
 
         let media;
         if (req.file) {

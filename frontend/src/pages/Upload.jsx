@@ -10,7 +10,7 @@ import { setPostData } from "../redux/postSlice";
 import { toast } from "sonner";
 import { setCurrentUserStory } from "../redux/storySlice";
 import { setLoopData } from "../redux/loopSlice";
-
+import VideoPlayer from "../components/VideoPlayer"
 
 const Upload = () => {
   const navigate = useNavigate();
@@ -82,8 +82,9 @@ const Upload = () => {
       formData.append("media", backendMedia);
       const res = await axios.post(`${urlEndpoint}/loop/upload`,formData, { withCredentials: true })
         dispatch(setLoopData([...loopData, res.data]))
+        navigate("/")
     } catch (error) {
-        toast.error(error.response.data.message)
+        toast.error(error.response?.data?.message)
     } finally {
       setLoading(false);
     }
@@ -106,7 +107,7 @@ const Upload = () => {
           className="text-white w-[25px] h-[25px] cursor-pointer"
           onClick={() => navigate("/")}
         />
-        <h1 className="text-white text-[20px] font-semibold">Upload Midia</h1>
+         <h1 className="text-white text-[20px] font-semibold">Upload Mídia</h1>
       </div>
       <div className="w-[90%] max-w-[600px] h-[80px] bg-[white] rounded-full flex justify-around items-center gap-[10px]">
         <div
@@ -165,7 +166,7 @@ const Upload = () => {
                 <input
                   type="text"
                   className="w-full border-b-gray-400 border-b-2 outline-none px-[10px] py-[5px] text-white mt-[20px]"
-                  placeholder="write caption"
+                  placeholder="Escreva uma legenda"
                   onChange={(e) => setCaption(e.target.value)}
                   value={caption}
                 />
@@ -180,7 +181,7 @@ const Upload = () => {
                 <input
                   type="text"
                   className="w-full border-b-gray-400 border-b-2 outline-none px-[10px] py-[5px] text-white mt-[20px]"
-                  placeholder="write caption"
+                placeholder="Escreva uma legenda"
                   onChange={(e) => setCaption(e.target.value)}
                   value={caption}
                 />
