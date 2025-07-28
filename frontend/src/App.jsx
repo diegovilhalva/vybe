@@ -14,6 +14,8 @@ import useGetAllPosts from "./hooks/useGetAllPosts";
 import useGetFollowingList from "./hooks/useGetFollowingList";
 import Loops from "./pages/Loops";
 import useGetAllLoops from "./hooks/useGetAllLoops";
+import Story from "./pages/Story";
+import useGetAllStories from "./hooks/useGetAllStories";
 
 
 const App = () => {
@@ -23,6 +25,7 @@ const App = () => {
   useGetAllPosts()
   useGetFollowingList()
   useGetAllLoops()
+  useGetAllStories()
   if (loading) return null;
 
 
@@ -38,6 +41,7 @@ const App = () => {
         <Route path="/editprofile" element={userData ? <EditProfile /> : <Navigate to={"/signin"} />} />
         <Route path="/upload" element={userData ? <Upload /> : <Navigate to={"/signin"} />} />
         <Route path='/loops' element={userData ? <Loops /> : <Navigate to={"/signin"} />} />
+           <Route path='/story/:userName' element={ userData ? <Story /> : <Navigate to={"/signin"} />} />
       </Routes>
     </>
   );

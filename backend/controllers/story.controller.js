@@ -49,8 +49,8 @@ export const viewStory = async (req, res) => {
 
     try {
 
-        const storyId = req.params.storyId;
-        const story = await Story.findById(storyId);
+        const storyId = req.params.storyId
+        const story = await Story.findById(storyId)
 
         if (!story) {
             return res.status(404).json({ message: "Story não encontrado" });

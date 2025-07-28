@@ -9,7 +9,10 @@ import { useSelector } from "react-redux";
 import Post from "./Post";
 
 const Feed = () => {
-    const { postData } = useSelector((state) => state.post);
+  const { postData } = useSelector((state) => state.post)
+  const { userData } = useSelector((state) => state.user)
+  const { storyList } = useSelector((state) => state.story);
+  const { currentUserStory } = useSelector((state) => state.story)
 
   const handleLogOut = async () => {
     try {
@@ -20,7 +23,9 @@ const Feed = () => {
     } catch (error) {
       console.log("erro sair da aplicação ", error);
     }
-  };
+  }
+
+
   return (
     <div className="lg:w-[50%] min-h-[100vh] bg-[black] w-full lg:h-[100vh] relative lg:overflow-y-auto">
       <div className="w-full h-[100px] flex items-center justify-between p-[20px]
@@ -31,25 +36,27 @@ const Feed = () => {
             <FaRegHeart className="text-[white] w-[25px] h-[25px] cursor-pointer" />
             <div className="w-[10px] h-[10px] bg-blue-600 rounded-full absolute top-0 right-[-5px]"></div>
           </div>
-            <BiMessageAltDetail
-              className="text-white w-[25px] h-[25px] cursor-pointer" />
+          <BiMessageAltDetail
+            className="text-white w-[25px] h-[25px] cursor-pointer" />
         </div>
       </div>
 
 
       <div className="flex w-full overflow-auto gap-[20px] items-center p-[20px]">
-        <StoryDp userName={"Lorema"} />
-        <StoryDp userName={"Lorem"} />
-        <StoryDp userName={"Lorem"} />
-        <StoryDp userName={"Lorem"} />
-        <StoryDp userName={"Lorem"} />
-        <StoryDp userName={"Lorem"} />
-        <StoryDp userName={"Lorem"} />
-        <StoryDp userName={"Lorem"} />
+        <StoryDp userName={"Seu story"} ProfileImage={userData.profileImage}
+          story={currentUserStory} />
+        {storyList?.map((story, index) => (
+          <StoryDp
+            userName={story.author.userName}
+            ProfileImage={story.author.profileImage}
+            story={story}
+          />
+        ))}
+
       </div>
       <div className="w-full min-h-[100vh] flex flex-col items-center gap-[20px] p-[10px] pt-[40px] bg-white rounded-t-[60px] relative pb-[120px]">
         <Nav />
-         {postData?.map((post, index) => (
+        {postData?.map((post, index) => (
           <Post key={index} post={post} />
         ))}
       </div>
