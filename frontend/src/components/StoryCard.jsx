@@ -80,8 +80,8 @@ const StoryCard = ({ storyData }) => {
                             </div>
                             <div className="flex relative">
                                 {storyData?.viewers?.slice(0, 3).map((viewer, index) => (
-                                    <div
-                                        className={`w-[30px] h-[30px]  border-2 border-black rounded-full cursor-pointer overflow-hidden ${index > 0 ? `absolute left-[${index * 10}px]` : ""
+                                    <div 
+                                    key={index}                                        className={`w-[30px] h-[30px]  border-2 border-black rounded-full cursor-pointer overflow-hidden ${index > 0 ? `absolute left-[${index * 10}px]` : ""
                                             }`}
                                     >
                                         <img

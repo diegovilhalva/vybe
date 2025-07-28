@@ -161,7 +161,7 @@ const LoopCard = ({ loop }) => {
                                     <img
                                         src={com.author?.profileImage || dp}
                                         alt=""
-                                        className="w-full object-cover"
+                                        className="w-full h-full object-cover"
                                     />
                                 </div>
                                 <div className="w-[150px] font-semibold text-white truncate">

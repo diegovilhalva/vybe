@@ -19,6 +19,7 @@ const useGetCurrentUser = () => {
         });
         dispatch(setUserData(res.data));
         dispatch(setCurrentUserStory(res.data.story))
+
       } catch (error) {
         console.log("Usuário não autenticado", error);
       } finally {
