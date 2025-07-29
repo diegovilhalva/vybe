@@ -8,6 +8,7 @@ import userRoutes from "./routes/user.route.js"
 import postRoutes from "./routes/post.route.js"
 import loopRoutes from "./routes/loop.route.js"
 import storyRoutes from "./routes/story.route.js"
+import messageRoutes from "./routes/message.route.js"
 
 const PORT = process.env.PORT || 4000
 
@@ -27,7 +28,7 @@ app.use("/api/user", userRoutes)
 app.use("/api/post", postRoutes)
 app.use("/api/loop", loopRoutes)
 app.use("/api/story",storyRoutes)
-
+app.use("/api/message",messageRoutes)
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
