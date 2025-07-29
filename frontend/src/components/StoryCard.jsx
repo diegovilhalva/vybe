@@ -43,12 +43,13 @@ const StoryCard = ({ storyData }) => {
                     {storyData?.author?.userName}
                 </div>
             </div>
-            <div className="absolute top-[10px]  w-full h-[5px] bg-gray-900">
+            <div className="absolute top-[10px] w-full h-[5px] bg-gray-700 rounded-full overflow-hidden">
                 <div
-                    className="h-full w-[200px] bg-white transition-all duration-200 ease-linear"
+                    className="h-full bg-white rounded-full transition-all duration-[150ms]"
                     style={{ width: `${progress}%` }}
-                ></div>
+                />
             </div>
+
             {!showViewers && (
                 <>
                     <div className="w-[full] h-[90vh]  flex  items-center justify-center ">
@@ -80,8 +81,8 @@ const StoryCard = ({ storyData }) => {
                             </div>
                             <div className="flex relative">
                                 {storyData?.viewers?.slice(0, 3).map((viewer, index) => (
-                                    <div 
-                                    key={index}                                        className={`w-[30px] h-[30px]  border-2 border-black rounded-full cursor-pointer overflow-hidden ${index > 0 ? `absolute left-[${index * 10}px]` : ""
+                                    <div
+                                        key={index} className={`w-[30px] h-[30px]  border-2 border-black rounded-full cursor-pointer overflow-hidden ${index > 0 ? `absolute left-[${index * 10}px]` : ""
                                             }`}
                                     >
                                         <img
