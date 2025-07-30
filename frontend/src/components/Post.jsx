@@ -27,7 +27,7 @@ const Post = ({ post }) => {
 
     const { userData } = useSelector((state) => state.user);
     const { postData } = useSelector((state) => state.post);
-    //const { socket } = useSelector((state) => state.socket);
+    const { socket } = useSelector((state) => state.socket);
 
     const [showComment, setShowComment] = useState(false);
     const [message, setMessage] = useState("");
@@ -83,7 +83,7 @@ const Post = ({ post }) => {
         }
 
     };
-    /*
+    
       useEffect(() => {
         socket.on("likedPost", (updatedData) => {
           const updatedPosts = postData.map((p) => p._id == updatedData.postId ? { ...p, likes: updatedData.likes } : p);
@@ -100,7 +100,7 @@ const Post = ({ post }) => {
           socket.off("CommentPost");
         }
       }, [postData, dispatch, socket]);
-      */
+      
     
 
     return (

@@ -1,6 +1,7 @@
 import uploadOnCloudinary from "../config/upload.js";
 import Loop from "../models/loop.model.js"
 import User from "../models/user.model.js";
+import { io } from "../socket.js";
 
 export const uploadLoop = async (req, res) => {
     try {
@@ -72,12 +73,12 @@ export const like = async (req, res) => {
 
         await loop.save();
         await loop.populate("author", "name userName profileImage");
-        /*
+        
             io.emit("likedLoop", {
                 loopId: loop._id,
                 likes: loop.likes
             });
-            */
+            
 
         return res.status(200).json(loop);
 
@@ -132,12 +133,12 @@ export const comment = async (req, res) => {
         await loop.populate("author", "name userName profileImage");
         await loop.populate("comments.author");
 
-        /*
+        
         io.emit("commentLoop", {
             loopId: loop._id,
             comments: loop.comments
         });
-        */
+        
         return res.status(200).json(loop);
 
     }

@@ -52,7 +52,7 @@ const App = () => {
 
       socketIo.on('getOnlineUsers', (users) => {
         dispatch(setOnlineUsers(users));
-         console.log("Online Users: ", users);
+         //console.log("Online Users: ", users);
       });
       return () => socketIo.close();
     } else {

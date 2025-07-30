@@ -1,11 +1,13 @@
 import { IoArrowBackOutline } from "react-icons/io5";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import OnlineUser from "./OnlineUser";
+import { setSelectedUser } from "../redux/messageSlice";
 
 
 const Messages = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     const { userData } = useSelector((state) => state.user)
     const { onlineUsers } = useSelector((state) => state.socket)
     const { prevChatUsers } = useSelector((state) => state.message)

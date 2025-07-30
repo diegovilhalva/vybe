@@ -9,8 +9,7 @@ import { setCurrentUserStory } from "../redux/storySlice";
 const useGetCurrentUser = () => {
   const { storyData } = useSelector((state) => state.story)
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-
+ 
   useEffect(() => {
     (async () => {
       try {
@@ -22,13 +21,11 @@ const useGetCurrentUser = () => {
 
       } catch (error) {
         console.log("Usuário não autenticado", error);
-      } finally {
-        setLoading(false);
       }
     })();
   }, []);
 
-  return { loading };
+ 
 };
 
 export default useGetCurrentUser;

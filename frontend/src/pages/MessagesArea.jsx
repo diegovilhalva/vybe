@@ -14,6 +14,7 @@ import ReceiverMessage from "../components/ReceiverMessage";
 const MessagesArea = () => {
     const { selectedUser, messages } = useSelector((state) => state.message)
     const { userData } = useSelector((state) => state.user)
+    const { socket } = useSelector((state) => state.socket);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -40,7 +41,7 @@ const MessagesArea = () => {
             }
 
             const res = await  axios.post(`${urlEndpoint}/message/send/${selectedUser._id}`, formData, { withCredentials: true })
-            dispatch(setMessages([...messages, res.data]))
+            dispatch(setMessages([...messages, res.data.newMessage]))
             setInput("")
             setBackendImage(null)
             setFrontendImage(null)
@@ -52,6 +53,7 @@ const MessagesArea = () => {
     const getAllMessages = async () => {
         try {
             const res = await axios.get(`${urlEndpoint}/message/getAll/${selectedUser._id}`, { withCredentials: true })
+            
             dispatch(setMessages(res.data))
         } catch (error) {
             console.log(error)
@@ -60,7 +62,16 @@ const MessagesArea = () => {
     useEffect(() => {
         getAllMessages();
     }, []);
-   
+
+  useEffect(() => {
+    socket?.on("newMessage", (mess) => {
+      dispatch(setMessages([...messages, mess]));
+    });
+    return () => {
+      socket?.off("newMessage");
+    }
+  }, [messages, setMessages]);
+ 
     return (
         <div className="w-full h-[100vh] bg-black relative">
             <div className=" w-full flex items-center gap-[15px] px-[20px]  py-[10px] fixed top-0 z-[100] bg-black ">
