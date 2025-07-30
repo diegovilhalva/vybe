@@ -7,12 +7,14 @@ import StoryDp from "./StoryDp";
 import Nav from "./Nav";
 import { useSelector } from "react-redux";
 import Post from "./Post";
+import { useNavigate } from "react-router";
 
 const Feed = () => {
   const { postData } = useSelector((state) => state.post)
   const { userData } = useSelector((state) => state.user)
   const { storyList } = useSelector((state) => state.story);
   const { currentUserStory } = useSelector((state) => state.story)
+  const navigate = useNavigate()
 
   const handleLogOut = async () => {
     try {
@@ -37,7 +39,8 @@ const Feed = () => {
             <div className="w-[10px] h-[10px] bg-blue-600 rounded-full absolute top-0 right-[-5px]"></div>
           </div>
           <BiMessageAltDetail
-            className="text-white w-[25px] h-[25px] cursor-pointer" />
+            className="text-white w-[25px] h-[25px] cursor-pointer"
+            onClick={() => navigate("/messages")} />
         </div>
       </div>
 

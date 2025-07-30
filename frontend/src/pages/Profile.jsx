@@ -10,6 +10,7 @@ import dp from "../assets/dp.webp";
 import Nav from "../components/Nav";
 import FollowButton from "../components/FollowButton";
 import Post from "../components/Post";
+import { setSelectedUser } from "../redux/messageSlice";
 
 const Profile = () => {
     const { userName } = useParams()
@@ -44,6 +45,7 @@ const Profile = () => {
             console.log("erro no logout ", error);
         }
     }
+   
     return (
         <div className="w-full min-h-screen bg-black">
             <div className="text-white w-full h-[80px] flex justify-between items-center px-[30px]">

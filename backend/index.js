@@ -9,10 +9,11 @@ import postRoutes from "./routes/post.route.js"
 import loopRoutes from "./routes/loop.route.js"
 import storyRoutes from "./routes/story.route.js"
 import messageRoutes from "./routes/message.route.js"
+import { app, server } from "./socket.js"
 
 const PORT = process.env.PORT || 4000
 
-const app = express()
+
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }))
 app.use(express.json())
@@ -30,7 +31,7 @@ app.use("/api/loop", loopRoutes)
 app.use("/api/story",storyRoutes)
 app.use("/api/message",messageRoutes)
 connectDB().then(() => {
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
   });
 });
