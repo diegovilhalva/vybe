@@ -23,6 +23,9 @@ import MessagesArea from "./pages/MessagesArea";
 import useGetPrevChatUsers from "./hooks/useGetPrevChatUsers";
 import { setOnlineUsers, setSocket } from "./redux/socketSlice";
 import Search from "./pages/Search";
+import Notifications from "./pages/Notifications";
+import useGetAllNotifications from "./hooks/useGetAllNotifications";
+import { setNotificationData } from "./redux/userSlice";
 
 
 
@@ -30,6 +33,7 @@ const App = () => {
 
   const { userData } = useSelector((state) => state.user)
   const { socket } = useSelector((state) => state.socket)
+  const { notificationData } = useSelector((state) => state.user)
   const dispatch = useDispatch();
   useGetCurrentUser()
   useGetSuggestedUsers()
@@ -38,7 +42,7 @@ const App = () => {
   useGetAllLoops()
   useGetAllStories()
   useGetPrevChatUsers()
-
+  useGetAllNotifications()
 
   useEffect(() => {
     if (userData) {
@@ -65,6 +69,10 @@ const App = () => {
 
   }, [userData])
 
+   socket?.on('newNotification', (noti) => {
+    dispatch(setNotificationData([...notificationData, noti]));
+  })
+
   return (
     <>
       <Toaster richColors position="top-center" />
@@ -81,6 +89,7 @@ const App = () => {
         <Route path='/messages' element={userData ? <Messages /> : <Navigate to={"/signin"} />} />
         <Route path='/messageArea' element={userData ? <MessagesArea /> : <Navigate to={"/signin"} />} />
          <Route path='/search' element={ userData ? <Search /> : <Navigate to={"/signin"} />} />
+          <Route path='/notifications' element={ userData ? <Notifications /> : <Navigate to={"/signin"} />} />
       </Routes>
     </>
   );

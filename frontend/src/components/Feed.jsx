@@ -8,12 +8,15 @@ import Nav from "./Nav";
 import { useSelector } from "react-redux";
 import Post from "./Post";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
 const Feed = () => {
   const { postData } = useSelector((state) => state.post)
   const { userData } = useSelector((state) => state.user)
   const { storyList } = useSelector((state) => state.story);
   const { currentUserStory } = useSelector((state) => state.story)
+  const { notificationData } = useSelector((state) => state.user)
+  const [showNotification, setShowNotification] = useState(false)
   const navigate = useNavigate()
 
   const handleLogOut = async () => {
@@ -34,9 +37,15 @@ const Feed = () => {
             lg:hidden">
         <img src={logo} alt="" className="w-[80px]" />
         <div className="flex items-center gap-[10px]">
-          <div className="relative z-[100]">
-            <FaRegHeart className="text-[white] w-[25px] h-[25px] cursor-pointer" />
-            <div className="w-[10px] h-[10px] bg-blue-600 rounded-full absolute top-0 right-[-5px]"></div>
+          <div
+            className="relative z-[100]"
+            onClick={() => setShowNotification((prev) => !prev)}
+          >
+            <FaRegHeart className="text-[white] w-[25px] h-[25px]" />
+            {notificationData?.length > 0 &&
+              notificationData.some((noti) => noti.isRead === false) && (
+                <div className="w-[10px] h-[10px] bg-blue-600 rounded-full absolute top-0 right-[-5px]"></div>
+              )}
           </div>
           <BiMessageAltDetail
             className="text-white w-[25px] h-[25px] cursor-pointer"

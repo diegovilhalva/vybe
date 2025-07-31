@@ -1,7 +1,8 @@
 import uploadOnCloudinary from "../config/upload.js";
 import Loop from "../models/loop.model.js"
+import Notification from "../models/notificaton.model.js";
 import User from "../models/user.model.js";
-import { io } from "../socket.js";
+import { getSocketId, io } from "../socket.js";
 
 export const uploadLoop = async (req, res) => {
     try {
@@ -53,13 +54,13 @@ export const like = async (req, res) => {
         }
         else {
             loop.likes.push(req.userId);
-            /* if (loop.author._id != req.userId) {
+             if (loop.author._id != req.userId) {
                 const notification = await Notification.create({
                     sender: req.userId,
                     receiver: loop.author,
                     type: "like",
-                    post: loop._id,
-                    message: `liked your loop`
+                    loop: loop._id,
+                    message: `curtiu seu  loop`
                 });
                 const populatedNotification = await Notification.findById(notification._id)
                     .populate("sender receiver loop");
@@ -68,7 +69,7 @@ export const like = async (req, res) => {
                 if (receiverSocketId) {
                     io.to(receiverSocketId).emit("newNotification", populatedNotification);
                 }
-            }*/
+            }
         }
 
         await loop.save();
@@ -110,14 +111,14 @@ export const comment = async (req, res) => {
             message: message,
         });
 
-        /*
+        
         if(loop.author._id != req.userId){
             const notification = await Notification.create({
                 sender: req.userId,
                 receiver: loop.author,
                 type: "comment",
                 post: loop._id,
-                message: `commented on your loop`
+                message: `comentou no seu loop`
             });
             const populatedNotification = await Notification.findById(notification._id)
                 .populate("sender receiver loop");
@@ -126,7 +127,7 @@ export const comment = async (req, res) => {
             if(receiverSocketId){
                 io.to(receiverSocketId).emit("newNotification", populatedNotification);
             }
-        }*/
+        }
 
         await loop.save();
 

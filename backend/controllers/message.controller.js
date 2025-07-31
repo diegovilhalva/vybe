@@ -83,8 +83,8 @@ export const getPrevUserChats = async (req, res) => {
                     userMap[user._id] = user;
                 }
             })
+            
         })
-
         const previousUsers = Object.values(userMap);
         return res.status(200).json(previousUsers);
     }

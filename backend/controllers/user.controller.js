@@ -2,6 +2,8 @@ import User from "../models/user.model.js"
 import '../models/post.model.js'
 import "../models/loop.model.js"
 import uploadOnCloudinary from "../config/upload.js";
+import Notification from "../models/notificaton.model.js";
+import { getSocketId, io } from "../socket.js";
 
 
 export const getCurrentUser = async (req, res) => {
@@ -147,14 +149,14 @@ export const follow = async (req, res) => {
         } else {
             currentUser.following.push(targetUserId);
             targetUser.followers.push(currentUserId);
-            /*
+            
           if (currentUser._id != targetUser._id) {
             const notification = await Notification.create({
               sender: req.userId,
               receiver: targetUserId,
               type: "follow",
               // post: loop._id,
-              message: `started following you`,
+              message: `começou a seguir você`,
             });
             const populatedNotification = await Notification.findById(
               notification._id
@@ -167,7 +169,7 @@ export const follow = async (req, res) => {
                 populatedNotification
               );
             }
-          } */
+          } 
 
             await currentUser.save();
             await targetUser.save();
@@ -219,4 +221,62 @@ export const search = async (req, res) => {
                 message: `Erro ao pesquisar usuário`,
             });
     }
+};
+
+
+export const getAllNotifications = async (req, res) => {
+  try {
+    const notifications = await Notification.find({
+      receiver: req.userId,
+    }).populate("sender receiver post loop").sort({ createdAt: -1 });
+
+    return res.status(200).json(notifications);
+  } catch (error) {
+    console.log(error)
+    return res
+      .status(500)
+      .json({
+        message: `erro nas notificações`,
+      });
+  }
+};
+
+
+
+export const markAsRead = async (req, res) => {
+  // try{
+  //     const notificationId = req.params.notificationId;
+  //     const notification = await Notification.findById(notificationId)
+  //         .populate("sender receiver post loop");
+
+  //     notification.isRead = true;
+  //     await notification.save();
+
+  //     return res.status(200).json({message: "marked as read"});
+  // }
+  try {
+    const { notificationId } = req.body;
+
+    if (Array.isArray(notificationId)) {
+     
+      await Notification.updateMany(
+        { _id: { $in: notificationId }, receiver: req.userId },
+        { $set: { isRead: true } }
+      );
+    } else {
+     
+      await Notification.findOneAndUpdate(
+        { _id: notificationId, receiver: req.userId },
+        { $set: { isRead: true } }
+      );
+    }
+    return res.status(200).json({ message: "marcada como lida" });
+  } catch (error) {
+    console.log(error)
+    return res
+      .status(500)
+      .json({
+        message: `Erro ao marcar como lida`,
+      });
+  }
 };

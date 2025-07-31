@@ -1,7 +1,8 @@
 import Post from "../models/post.model.js"
 import User from "../models/user.model.js"
 import uploadOnCloudinary from "../config/upload.js"
-import { io } from "../socket.js"
+import { getSocketId, io } from "../socket.js"
+import Notification from "../models/notificaton.model.js"
 
 export const uploadPost = async (req, res) => {
     try {
@@ -75,14 +76,14 @@ export const comment = async (req, res) => {
             author: req.userId,
             message: message,
         });
-        /*
+        
         if(post.author._id != req.userId){
             const notification = await Notification.create({
                 sender: req.userId,
                 receiver: post.author,
                 type: "comment",
                 post: post._id,
-                message: `commentou no seu post`
+                message: `comentou no seu post`
             });
             const populatedNotification = await Notification.findById(notification._id)
                 .populate("sender receiver post");
@@ -91,7 +92,7 @@ export const comment = async (req, res) => {
             if(receiverSocketId){
                 io.to(receiverSocketId).emit("newNotification", populatedNotification);
             }
-        }*/
+        }
 
         await post.save();
 
@@ -131,7 +132,7 @@ export const like = async (req, res) => {
         }
         else {
             post.likes.push(req.userId);
-            /* if(post.author._id != req.userId){
+            if(post.author._id != req.userId){
                  const notification = await Notification.create({
                      sender: req.userId,
                      receiver: post.author,
@@ -147,7 +148,7 @@ export const like = async (req, res) => {
                      io.to(receiverSocketId).emit("newNotification", populatedNotification);
                  }
              }
-             */
+             
         }
 
         await post.save();
