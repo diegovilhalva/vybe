@@ -22,6 +22,7 @@ import { io } from 'socket.io-client'
 import MessagesArea from "./pages/MessagesArea";
 import useGetPrevChatUsers from "./hooks/useGetPrevChatUsers";
 import { setOnlineUsers, setSocket } from "./redux/socketSlice";
+import Search from "./pages/Search";
 
 
 
@@ -79,6 +80,7 @@ const App = () => {
         <Route path='/story/:userName' element={userData ? <Story /> : <Navigate to={"/signin"} />} />
         <Route path='/messages' element={userData ? <Messages /> : <Navigate to={"/signin"} />} />
         <Route path='/messageArea' element={userData ? <MessagesArea /> : <Navigate to={"/signin"} />} />
+         <Route path='/search' element={ userData ? <Search /> : <Navigate to={"/signin"} />} />
       </Routes>
     </>
   );

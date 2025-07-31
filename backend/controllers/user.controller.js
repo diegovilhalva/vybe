@@ -115,7 +115,7 @@ export const follow = async (req, res) => {
     try {
         const currentUserId = req.userId;
         const targetUserId = req.params.targetUserId;
-        
+
 
         if (!targetUserId) {
             return res.status(400).json({ message: "Usuário não encontrado" });
@@ -193,5 +193,30 @@ export const followingList = async (req, res) => {
         return res
             .status(500)
             .json({ message: `Erro ao carregar seguidores` });
+    }
+}
+
+export const search = async (req, res) => {
+    try {
+        const keyWord = req.query.keyWord;
+        if (!keyWord) {
+            return res.status(400).json({ message: "Digite uma palavra-chave" });
+        }
+
+        const users = await User.find({
+            $or: [
+                { userName: { $regex: keyWord, $options: "i" } },
+                { name: { $regex: keyWord, $options: "i" } },
+            ],
+        }).select("-password");
+
+        return res.status(200).json(users);
+    } catch (error) {
+        console.log(error)
+        return res
+            .status(500)
+            .json({
+                message: `Erro ao pesquisar usuário`,
+            });
     }
 };
