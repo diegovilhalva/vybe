@@ -47,7 +47,7 @@ const App = () => {
   useEffect(() => {
     if (userData) {
       const socketIo = io(
-        'http://localhost:4000', {
+        import.meta.env.VITE_URL_ENDPOINT, {
         query: {
           userId: userData._id
         }
