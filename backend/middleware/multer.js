@@ -1,13 +1,22 @@
 import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
+import fs from 'fs'; 
+import os from 'os';
 
+const uploadPath = path.join(os.tmpdir(), 'uploads/temp')
 
-const uploadPath = './uploads/temp';
+const ensureDirExists = (dirPath) => {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true })
+  }
+};
+
+ensureDirExists(uploadPath)
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadPath);
+    ensureDirExists(uploadPath); 
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
